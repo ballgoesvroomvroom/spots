@@ -1,7 +1,5 @@
-import {
-  NextMiddleware,
-  NextResponse
-} from "next/server";
+import { MiddlewareFactory } from "@/middleware";
+import { NextMiddleware, NextResponse } from "next/server";
 
 export function stackMiddlewares(functions: MiddlewareFactory[] = [], index = 0): NextMiddleware {
   const current = functions[index];
