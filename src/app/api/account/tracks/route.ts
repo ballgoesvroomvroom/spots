@@ -22,7 +22,7 @@ export async function GET(req: Request) {
   console.log("data!", data)
 
   // create return payload
-  let payload = result.items.map(e => {
+  let payload = result.items.map((e: any) => {
     return {
       id: e.id,
       name: e.name,

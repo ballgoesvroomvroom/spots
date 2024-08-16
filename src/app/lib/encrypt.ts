@@ -3,7 +3,9 @@ import { createCipheriv, createDecipheriv } from 'crypto';
 
 // Replace with your own key and iv
 // You can generate them with crypto.randomBytes(32) and crypto.randomBytes(16)
+// @ts-ignore
 const key = Buffer.from(process.env.ENCRYPT_KEY, 'hex');
+// @ts-ignore
 const iv = Buffer.from(process.env.ENCRYPT_IV, 'hex');
 const algorithm = 'aes-256-cbc';
 
