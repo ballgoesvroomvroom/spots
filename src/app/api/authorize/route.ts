@@ -1,8 +1,9 @@
 import { serialize } from 'cookie';
 import { signIn } from "@/app/lib/authenticator";
 import { COOKIE_SESSION_NAME } from '@/middlewares/authMiddleware';
+import { NextRequest } from 'next/server';
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
     const data: {token: string} = await req.json()
     const providedToken: string = data.token

@@ -1,6 +1,7 @@
 import { getSessionFromReq } from "@/middlewares/authMiddleware"
+import { NextRequest } from "next/server"
 
-export async function GET(req: Request) {
+export async function GET(req: NextRequest) {
   let session = await getSessionFromReq(req)
   console.log("cfm", session)
   if (session) {

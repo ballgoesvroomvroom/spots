@@ -1,13 +1,14 @@
 import { NextFetchEvent, NextRequest, NextResponse } from 'next/server';
 import { getSession, Session } from '@/app/lib/session';
 import { MiddlewareFactory } from '@/middleware';
+import cookie from 'cookie';
 
 export const COOKIE_SESSION_NAME: string = "filt"
 
-export const getSessionFromReq = async (req: Request): Promise<Session | undefined> => {
-  let sid = req.cookies.get(COOKIE_SESSION_NAME) // obtain session ID
-  if (sid != null) {
-    sid = sid.value
+export const getSessionFromReq = async (req: NextRequest): Promise<Session | undefined> => {
+  let sidCookie = req.cookies.get(COOKIE_SESSION_NAME) // obtain session ID
+  if (sidCookie != null) {
+    let sid = sidCookie.value
     console.log("\n\nFOUND COOKIE!!", sid)
     const session = await getSession(sid)
 
