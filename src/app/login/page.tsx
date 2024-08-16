@@ -3,15 +3,6 @@
 import Image from "next/image";
 import { redirectToAuthCodeFlow } from "./spotify-client-wrapper";
 
-async function fetchProfile(token: string): Promise<any> {
-    const result = await fetch("https://api.spotify.com/v1/me", {
-        method: "GET", headers: { Authorization: `Bearer ${token}` }
-    });
-
-    return await result.json();
-}
-
-
 export default function Connect() {
   return (
     <main className="hero min-h-screen">

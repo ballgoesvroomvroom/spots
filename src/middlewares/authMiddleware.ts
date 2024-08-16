@@ -4,7 +4,7 @@ import { MiddlewareFactory } from '@/middleware';
 
 export const COOKIE_SESSION_NAME: string = "filt"
 
-export const getRequestSession = async (req: Request): Promise<Session | undefined> => {
+export const getSessionFromReq = async (req: Request): Promise<Session | undefined> => {
   let sid = req.cookies.get(COOKIE_SESSION_NAME) // obtain session ID
   if (sid != null) {
     sid = sid.value
@@ -21,14 +21,19 @@ export const getRequestSession = async (req: Request): Promise<Session | undefin
 
 export const loggedIn: MiddlewareFactory = (next) => {
   return async(req: NextRequest, _next: NextFetchEvent) => {
-    console.log("HIT")
     const pathname = req.nextUrl.pathname;
 
-    console.log("checking", pathname, pathname.startsWith("/login"))
     if (["/login"]?.some((path) => pathname.startsWith(path))) {
-      const session = await getRequestSession(req)
+      const session = await getSessionFromReq(req)
       if (session) {
           return NextResponse.redirect(new URL("/account", req.url))
+      } else {
+        return next(req, _next);
+      }
+    } else if (["/account"]?.some((path) => pathname.startsWith(path))) {
+      const session = await getSessionFromReq(req)
+      if (session == null) {
+        return NextResponse.redirect(new URL("/login", req.url))
       } else {
         return next(req, _next);
       }

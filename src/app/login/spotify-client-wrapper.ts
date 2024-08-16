@@ -1,7 +1,12 @@
+"use client"
+
 export const clientId: string = "84dedfb61b7b47f68326212f81c4f155";
 export const redirectURL: string = "http://localhost:3000/login/callback"
 const scope: string = "user-read-private user-read-email user-top-read"
 
+/**
+ * AUTHORISATION
+ */
 export async function redirectToAuthCodeFlow() {
     const verifier = generateCodeVerifier(128);
     const challenge = await generateCodeChallenge(verifier);

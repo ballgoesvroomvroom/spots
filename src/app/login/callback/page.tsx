@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { clientId, redirectURL, redirectToAuthCodeFlow, getAccessToken } from "../page";
+import { clientId, redirectURL, redirectToAuthCodeFlow, getAccessToken } from "../spotify-client-wrapper";
 
 export default function callback() {
     console.log("HELLO")
