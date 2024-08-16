@@ -2,7 +2,8 @@ import { sql } from '@vercel/postgres';
 import { Session, SessionNaive } from "@/lib/session"
 
 export type UserDetails = {
-	name: string
+	name: string,
+	id: string
 }
 
 export type AudioFeatures = {
@@ -70,22 +71,49 @@ export class Actor {
 		const data = await result.json()
 		console.log("data", data)
 
-		if (data && typeof data.display_name === 'string') {
-			return { name: data.display_name };
+		if (data) {
+			return { name: data.display_name, id: data.id };
 		}
 
 		return
 	}
 
 	async getTopTracks(): Promise<any> {
+		if (this.ready != true || this.profile == null) {
+			return null
+		}
+
 		const urlParams = new URLSearchParams()
 		urlParams.append("limit", "50")
 
-		const result = await fetch(`https://api.spotify.com/v1/me/top/tracks?${urlParams.toString()}`, {
+		let result: any = await fetch(`https://api.spotify.com/v1/me/top/tracks?${urlParams.toString()}`, {
 			method: "GET", headers: { Authorization: `Bearer ${this.token}`}
 		})
 
-		return await result.json()
+		if (result.status !== 200) {
+			return null
+		}
+
+		// get json
+		result = await result.json()
+
+		// remove previous entries from track_rankings table
+		await sql`DELETE FROM track_rankings WHERE user_id = ${this.profile.id}`
+
+		// add in to track_rankings table
+		let rank = 0
+		for (let entry of result.items) {
+			await sql`
+				INSERT INTO track_rankings (
+					user_id,
+					track_id,
+					rank
+				) VALUES (${this.profile.id}, ${entry.id}, ${rank})
+			`
+			rank++
+		}
+
+		return result
 	}
 
 	async getTrackFeatures(trackIds: string[]): Promise<{[id: string]: AudioFeatures}> {

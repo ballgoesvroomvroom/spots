@@ -11,6 +11,10 @@ export async function GET(req: NextRequest) {
   let actor = await getActor(session)
   let result = await actor.getTopTracks()
 
+  if (result == null) {
+    return new Response(null, { status: 500 }) // server error
+  }
+
   let trackIds: string[] = []
   for (let i = 0; i < result.items.length; i++) {
     let track = result.items[i]

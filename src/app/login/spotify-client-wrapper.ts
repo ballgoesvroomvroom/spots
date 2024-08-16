@@ -4,6 +4,9 @@ export const clientId: string = "84dedfb61b7b47f68326212f81c4f155";
 export const redirectURL: string = `${process.env.ENV_MODE === "dev" ? "http://localhost:3000/" : "https://spots-six.vercel.app/"}login/callback`
 const scope: string = "user-read-private user-read-email user-top-read"
 
+console.log("env_mode", process.env.ENV_MODE)
+console.log("redirectURL", redirectURL)
+
 /**
  * AUTHORISATION
  */
