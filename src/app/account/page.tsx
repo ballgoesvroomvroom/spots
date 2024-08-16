@@ -4,10 +4,10 @@ import React, { useState, useEffect, useRef } from 'react';
 
 export default function Account() {
     const [data, setData] = useState([]);
-    const [previewUrl, setPreviewUrl] = useState("");
-    const [currentEntryId, setCurrentEntryId] = useState(null); // Track the currently previewed entry
-    const [progresses, setProgresses] = useState({}); // Track progress for each entry
-    const audioRef = useRef(null);
+    const [previewUrl, setPreviewUrl] = useState<string>("");
+    const [currentEntryId, setCurrentEntryId] = useState<string | null>(null); // Track the currently previewed entry
+    const [progresses, setProgresses] = useState<{[entryId: string]: number}>({}); // Track progress for each entry
+    const audioRef = useRef<HTMLAudioElement>(null);
 
     useEffect(() => {
         async function fetchData() {
@@ -29,9 +29,9 @@ export default function Account() {
     }, []);
 
     useEffect(() => {
-        const audio = audioRef.current;
+        const audio: HTMLAudioElement | null = audioRef.current;
         if (audio) {
-            if (previewUrl) {
+            if (previewUrl.length >= 1) {
                 audio.currentTime = 0; // Reset playback position
                 audio.load();
                 audio.play().catch(err => {
@@ -45,9 +45,9 @@ export default function Account() {
     }, [previewUrl]);
 
     useEffect(() => {
-        const audio = audioRef.current;
+        const audio: HTMLAudioElement | null = audioRef.current;
         const interval = setInterval(() => {
-            if (audio && currentEntryId) {
+            if (audio != null && currentEntryId) {
                 const currentTime = audio.currentTime;
                 const duration = audio.duration;
                 if (duration) {
@@ -70,7 +70,7 @@ export default function Account() {
                 Your browser does not support the audio element.
             </audio>
             <div className="p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 justify-center 2xl:grid-cols-5">
-                {data.map(entry => {
+                {data.map((entry: {id: string, albumImages: {url: string}[], name: string, preview: string, open: string}) => {
                     rank++;
                     return (
                         <div key={entry.id} className="card bg-base-100 image-full shadow-xl bg-black">
@@ -88,6 +88,7 @@ export default function Account() {
                                             className="radial-progress"
                                             style={{
                                             	"visibility": (currentEntryId === entry.id ? "visible" : "hidden"),
+                                            	// @ts-ignore
                                                 "--value": (currentEntryId === entry.id && progresses[entry.id]) || 0,
                                                 "--size": "2rem",
                                             }}
@@ -103,7 +104,7 @@ export default function Account() {
                                             className="btn btn-secondary"
                                             onClick={() => {
                                             	if (entry.preview === previewUrl) {
-                                            		setPreviewUrl(null)
+                                            		setPreviewUrl("")
                                             		setCurrentEntryId(null)
                                             	} else {
 	                                                setPreviewUrl(entry.preview);

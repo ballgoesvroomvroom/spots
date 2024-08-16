@@ -6,6 +6,6 @@ export async function GET(req: Request) {
   if (session) {
     return Response.json({"success": true, "data": session.serialise()})
   } else {
-    return Repsonse.json({"success": false})
+    return Response.json({"success": false})
   }
 }
