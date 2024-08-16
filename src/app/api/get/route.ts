@@ -1,4 +1,4 @@
-import { getSessionFromReq } from "@/middleware"
+import { getSessionFromReq } from "@/middlewares/authMiddleware"
 
 export async function GET(req: Request) {
   let session = await getSessionFromReq(req)
