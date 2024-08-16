@@ -83,7 +83,7 @@ export default function Account() {
                             <div className="card-body bg-black/40">
                                 <div className="flex justify-between items-start">
                                     <h2 className="card-title">{entry.name}</h2>
-                                    {previewUrl && (
+                                    {(
                                         <div
                                             className="radial-progress"
                                             style={{
