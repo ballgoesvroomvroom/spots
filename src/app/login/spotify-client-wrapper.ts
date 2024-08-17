@@ -1,5 +1,6 @@
 "use client"
 
+// @ts-ignore
 export const clientId: string = process.env.SPOTIFY_CLIENT_ID;
 export const redirectURL: string = `${process.env.ENV_MODE === "dev" ? "http://localhost:3000/" : "https://spots-six.vercel.app/"}login/callback`
 const scope: string = "user-read-private user-read-email user-top-read"
