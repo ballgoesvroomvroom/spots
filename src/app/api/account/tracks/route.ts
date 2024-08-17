@@ -22,9 +22,6 @@ export async function GET(req: NextRequest) {
   }
 
   console.log("trackIds", trackIds)
-  console.log("pushing")
-  const data = actor.getTrackFeatures(trackIds)
-  console.log("data!", data)
 
   // create return payload
   let payload = result.items.map((e: any) => {

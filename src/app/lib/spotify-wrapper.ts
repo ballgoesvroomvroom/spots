@@ -98,12 +98,12 @@ export class Actor {
 		result = await result.json()
 
 		// remove previous entries from track_rankings table
-		await sql`DELETE FROM track_rankings WHERE user_id = ${this.profile.id}`
+		sql`DELETE FROM track_rankings WHERE user_id = ${this.profile.id}`
 
 		// add in to track_rankings table
 		let rank = 0
 		for (let entry of result.items) {
-			await sql`
+			sql`
 				INSERT INTO track_rankings (
 					user_id,
 					track_id,
@@ -154,7 +154,7 @@ export class Actor {
 
 		for (let trackId of Object.keys(uncachedIds)) {
 			let features = data[trackId]
-			await sql`
+			sql`
 			    INSERT INTO audio_features (
 			        acousticness,
 			        analysis_url,
